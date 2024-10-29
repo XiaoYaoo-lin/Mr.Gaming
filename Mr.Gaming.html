@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr.Gaming - Fun Mini Games</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #fff;
+        }
+        h1 {
+            font-size: 2em;
+            color: #00aaff;
+        }
+        .game-section {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 10px;
+            background-color: #333;
+            width: 80%;
+            max-width: 500px;
+        }
+        #clickButton, #randomNumberButton, #guessButton {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #00aaff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0088cc;
+        }
+        .input-field {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mr.Gaming - Fun Mini Games</h1>
+
+    <!-- Game 1: Click Game -->
+    <div class="game-section">
+        <h2>Game 1: Click Game</h2>
+        <div id="score">Score: 0</div>
+        <button id="clickButton">Click Me!</button>
+    </div>
+
+    <!-- Game 2: Random Number Guessing Game -->
+    <div class="game-section">
+        <h2>Game 2: Random Number Guessing</h2>
+        <p>Guess a number between 1 and 10:</p>
+        <input type="number" id="guessInput" class="input-field" placeholder="Enter your guess">
+        <button id="guessButton">Guess</button>
+        <div id="guessResult"></div>
+    </div>
+
+    <!-- Game 3: Random Number Generator -->
+    <div class="game-section">
+        <h2>Game 3: Random Number Generator</h2>
+        <button id="randomNumberButton">Generate Number (1-100)</button>
+        <div id="randomNumberResult"></div>
+    </div>
+
+    <script>
+        // Game 1: Click Game
+        let score = 0;
+        const scoreDisplay = document.getElementById("score");
+        const clickButton = document.getElementById("clickButton");
+
+        clickButton.addEventListener("click", () => {
+            score++;
+            scoreDisplay.textContent = "Score: " + score;
+        });
+
+        // Game 2: Random Number Guessing Game
+        const guessInput = document.getElementById("guessInput");
+        const guessButton = document.getElementById("guessButton");
+        const guessResult = document.getElementById("guessResult");
+        let randomNumber = Math.floor(Math.random() * 10) + 1;
+
+        guessButton.addEventListener("click", () => {
+            const userGuess = Number(guessInput.value);
+            if (userGuess === randomNumber) {
+                guessResult.textContent = "Correct! You guessed the number!";
+                randomNumber = Math.floor(Math.random() * 10) + 1; // Reset for new game
+            } else {
+                guessResult.textContent = "Wrong guess! Try again.";
+            }
+        });
+
+        // Game 3: Random Number Generator
+        const randomNumberButton = document.getElementById("randomNumberButton");
+        const randomNumberResult = document.getElementById("randomNumberResult");
+
+        randomNumberButton.addEventListener("click", () => {
+            const generatedNumber = Math.floor(Math.random() * 100) + 1;
+            randomNumberResult.textContent = "Generated Number: " + generatedNumber;
+        });
+    </script>
+<div class="game-section">
+    <h2>Game 4: Countdown Click Challenge</h2>
+    <p>Click as many times as you can in 10 seconds!</p>
+    <button id="countdownClickButton">Start Clicking!</button>
+    <div id="clickChallengeScore">Clicks: 0</div>
+    <div id="timer">Time Left: 10s</div>
+</div>
+
+<script>
+    let clickCount = 0;
+    let timeLeft = 10;
+    let countdownInterval;
+
+    const countdownClickButton = document.getElementById("countdownClickButton");
+    const clickChallengeScore = document.getElementById("clickChallengeScore");
+    const timerDisplay = document.getElementById("timer");
+
+    countdownClickButton.addEventListener("click", () => {
+        if (timeLeft > 0) {
+            clickCount++;
+            clickChallengeScore.textContent = "Clicks: " + clickCount;
+        }
+    });
+
+    function startCountdown() {
+        timeLeft = 10;
+        clickCount = 0;
+        clickChallengeScore.textContent = "Clicks: " + clickCount;
+        countdownClickButton.disabled = false;
+
+        countdownInterval = setInterval(() => {
+            timeLeft--;
+            timerDisplay.textContent = "Time Left: " + timeLeft + "s";
+            if (timeLeft === 0) {
+                clearInterval(countdownInterval);
+                countdownClickButton.disabled = true;
+                timerDisplay.textContent = "Time's up!";
+            }
+        }, 1000);
+    }
+
+    countdownClickButton.addEventListener("click", () => {
+        if (timeLeft === 10) startCountdown();
+    });
+</script>
+<div class="game-section">
+    <h2>Game 5: Reaction Test</h2>
+    <p>Click the button as soon as it turns green!</p>
+    <button id="reactionButton" style="background-color: red;">Wait...</button>
+    <div id="reactionResult"></div>
+</div>
+
+<script>
+    const reactionButton = document.getElementById("reactionButton");
+    const reactionResult = document.getElementById("reactionResult");
+    let startTime;
+
+    function startReactionTest() {
+        reactionButton.style.backgroundColor = "red";
+        reactionButton.textContent = "Wait...";
+        reactionResult.textContent = "";
+
+        setTimeout(() => {
+            reactionButton.style.backgroundColor = "green";
+            reactionButton.textContent = "Click!";
+            startTime = new Date().getTime();
+        }, Math.floor(Math.random() * 5000) + 1000); // Random delay between 1-5 seconds
+    }
+
+    reactionButton.addEventListener("click", () => {
+        if (reactionButton.style.backgroundColor === "green") {
+            const reactionTime = new Date().getTime() - startTime;
+            reactionResult.textContent = "Reaction Time: " + reactionTime + " ms";
+            startReactionTest();
+        } else {
+            reactionResult.textContent = "Too soon! Wait for green.";
+        }
+    });
+
+    startReactionTest();
+</script>
+<div class="game-section">
+    <h2>Game 6: Memory Challenge</h2>
+    <p>Memorize the number and enter it after it disappears.</p>
+    <div id="memoryNumber"></div>
+    <input type="text" id="memoryInput" class="input-field" placeholder="Enter number here">
+    <button id="memoryCheckButton">Check</button>
+    <div id="memoryResult"></div>
+</div>
+
+<script>
+    const memoryNumberDisplay = document.getElementById("memoryNumber");
+    const memoryInput = document.getElementById("memoryInput");
+    const memoryCheckButton = document.getElementById("memoryCheckButton");
+    const memoryResult = document.getElementById("memoryResult");
+    let memoryNumber;
+
+    function startMemoryChallenge() {
+        memoryNumber = Math.floor(Math.random() * 10000); // Generates a 4-digit number
+        memoryNumberDisplay.textContent = memoryNumber;
+        memoryInput.value = "";
+        memoryResult.textContent = "";
+
+        setTimeout(() => {
+            memoryNumberDisplay.textContent = "Remember the number!";
+        }, 3000); // Display number for 3 seconds
+    }
+
+    memoryCheckButton.addEventListener("click", () => {
+        if (parseInt(memoryInput.value) === memoryNumber) {
+            memoryResult.textContent = "Correct!";
+        } else {
+            memoryResult.textContent = "Incorrect. The number was " + memoryNumber;
+        }
+        startMemoryChallenge();
+    });
+
+    startMemoryChallenge();
+</script>
+<div class="game-section">
+    <h2>Game 7: Dice Rolling Game</h2>
+    <button id="rollDiceButton">Roll the Dice!</button>
+    <div id="diceResult"></div>
+</div>
+
+<script>
+    const rollDiceButton = document.getElementById("rollDiceButton");
+    const diceResult = document.getElementById("diceResult");
+
+    rollDiceButton.addEventListener("click", () => {
+        const diceRoll = Math.floor(Math.random() * 6) + 1;
+        diceResult.textContent = "You rolled a " + diceRoll + "!";
+    });
+</script>
+</body>
+</html>
